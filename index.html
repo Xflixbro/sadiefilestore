@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FileFlix • Video Wallpaper</title>
+  <title>FileFlix • Pure Video</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* === VIDEO BACKGROUND + NO BORDERS === */
+    /* === NO BACKGROUNDS – TEXT ONLY OVER VIDEO === */
     * {
       margin: 0;
       padding: 0;
@@ -29,36 +29,43 @@
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;          /* Ensures video covers entire area */
-      z-index: -2;                /* Behind everything */
-      pointer-events: none;       /* So clicks pass through to the card */
+      object-fit: cover;
+      z-index: -2;
+      pointer-events: none;
     }
-    /* Dark overlay for text readability */
+    /* Very subtle dark overlay to help text pop – barely visible */
     body::after {
       content: "";
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);  /* Slightly lighter than before to show video */
+      background: rgba(0, 0, 0, 0.3);  /* Lighter than before, just enough */
       z-index: -1;
     }
+    /* Main container: absolutely no background, no borders, no padding */
     .card {
-      max-width: 560px;
+      max-width: 700px;
       width: 100%;
-      background: rgba(20, 24, 36, 0.8); /* Slightly more transparent to see video */
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: none;
-      border-radius: 2.5rem;
-      padding: 2.5rem 2rem;
-      box-shadow: none;
+      background: transparent !important;  /* Completely transparent */
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;               /* No inner spacing */
       text-align: center;
-      transition: transform 0.2s ease;
       position: relative;
       z-index: 1;
     }
-    .card:hover {
-      transform: scale(1.01);
+    /* All text gets text-shadow for readability */
+    h1, .subtitle, .countdown-label, #countdown, .permanent-badge, .footer-note, .error-message p, .error-message h3 {
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5);
     }
+    .logo span {
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+    .logo i {
+      filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
+    }
+    /* Typography colors remain the same */
     .logo {
       display: flex;
       align-items: center;
@@ -69,7 +76,6 @@
     .logo i {
       font-size: 2.8rem;
       color: #e50914;
-      filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.4));
     }
     .logo span {
       font-size: 2.2rem;
@@ -91,11 +97,12 @@
       margin-bottom: 2.2rem;
       line-height: 1.5;
     }
+    /* Countdown panel: now fully transparent */
     .countdown-panel {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 2rem;
-      padding: 1.8rem 1.5rem;
-      margin: 2rem 0 1.5rem;
+      background: transparent !important;
+      border-radius: 0;
+      padding: 0.5rem 0 1rem;
+      margin: 1rem 0;
       border-left: none;
     }
     .countdown-label {
@@ -109,10 +116,11 @@
       font-size: 4.5rem;
       font-weight: 800;
       color: #e50914;
-      text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+      text-shadow: 0 0 30px rgba(229, 9, 20, 0.9), 0 0 60px rgba(0,0,0,0.8);
       line-height: 1;
       margin-bottom: 0.5rem;
     }
+    /* Button stays visible with its own background */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -135,36 +143,43 @@
       background: #f82a34;
       transform: scale(1.02);
     }
+    /* Permanent badge: no background */
     .permanent-badge {
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 40px;
-      padding: 0.75rem 1.2rem;
+      background: transparent !important;
+      border-radius: 0;
+      padding: 0.5rem 0;
       font-size: 0.9rem;
-      color: #7f87a5;
+      color: #b0b8d0;
       border: none;
       margin: 1rem 0 0.2rem;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.8);
     }
     .footer-note {
       font-size: 0.85rem;
-      color: #5b637e;
-      margin-top: 2rem;
+      color: #7f87a5;
+      margin-top: 1.5rem;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.7);
     }
+    /* Error message: only a subtle border, background removed */
     .error-message {
       color: #f1a9a9;
-      background: rgba(229, 9, 20, 0.1);
-      border-radius: 2rem;
-      padding: 2rem;
-      border: 1px solid rgba(229, 9, 20, 0.2);
+      background: transparent !important;
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(229, 9, 20, 0.3);
+      backdrop-filter: blur(2px);
+      text-shadow: none;
     }
     .error-message h3 {
       color: #fff;
       margin-bottom: 0.5rem;
     }
     .error-message p {
-      color: #bbb;
+      color: #ddd;
     }
+    /* Debug panel */
     #debug-console {
-      background: #111;
+      background: rgba(0,0,0,0.8);
       color: #0f0;
       font-family: monospace;
       font-size: 12px;
@@ -175,6 +190,7 @@
       max-height: 200px;
       overflow: auto;
       display: none;
+      border: 1px solid #0f0;
     }
   </style>
 </head>
@@ -182,9 +198,9 @@
   <!-- Video Background -->
   <video id="bg-video" autoplay muted loop playsinline>
     <source src="https://image2url.com/r2/default/videos/1771670349921-844ef8c5-30c0-450d-9773-f0e1d8b6064c.mp4" type="video/mp4">
-    Your browser does not support the video tag.
   </video>
 
+  <!-- Absolutely no background container -->
   <div class="card">
     <div class="logo">
       <i class="fas fa-cloud-upload-alt"></i>
@@ -198,7 +214,7 @@
       Permanent • Private • Instant
     </div>
 
-    <!-- Dynamic content will be injected into this container -->
+    <!-- Dynamic content -->
     <div id="dynamic-content"></div>
 
     <div class="permanent-badge">
@@ -209,7 +225,6 @@
       Powered by <strong>Vercel</strong> & <strong>Telegram</strong>
     </div>
 
-    <!-- Hidden debug panel (you can enable by adding #debug to URL) -->
     <div id="debug-console"></div>
   </div>
 
@@ -217,17 +232,14 @@
     (function() {
       "use strict";
 
-      // ---------- CONFIGURATION ----------
       const CONFIG = {
         BOT_USERNAME: "XeonFileStoreBot",
         URL_PARAM: "Xeonstart",
         COUNTDOWN_SECONDS: 5
       };
 
-      // Enable debug mode if URL has '#debug'
       const DEBUG = window.location.hash === '#debug';
 
-      // Simple logger
       function log(...args) {
         if (DEBUG) {
           console.log('[DEBUG]', ...args);
@@ -241,22 +253,16 @@
 
       log('Script started, debug mode:', DEBUG);
 
-      // Wait for DOM to be ready
       document.addEventListener('DOMContentLoaded', function() {
         log('DOM fully loaded');
 
         const dynamicDiv = document.getElementById('dynamic-content');
-        if (!dynamicDiv) {
-          console.error('Fatal: #dynamic-content element missing!');
-          return;
-        }
+        if (!dynamicDiv) return;
 
-        // Parse query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const startParam = urlParams.get(CONFIG.URL_PARAM);
         log('Query param', CONFIG.URL_PARAM + ':', startParam);
 
-        // If parameter is missing, show error
         if (!startParam) {
           dynamicDiv.innerHTML = `
             <div class="error-message">
@@ -268,11 +274,10 @@
           return;
         }
 
-        // Build Telegram deep link
         const telegramUrl = `https://t.me/${CONFIG.BOT_USERNAME}?start=${encodeURIComponent(startParam)}`;
         log('Telegram URL:', telegramUrl);
 
-        // --- Create the countdown panel and button dynamically ---
+        // Create countdown elements (no background)
         const panel = document.createElement('div');
         panel.className = 'countdown-panel';
 
@@ -290,6 +295,7 @@
         hint.style.color = '#a4aec6';
         hint.style.marginTop = '0.5rem';
         hint.textContent = 'click the button if nothing happens';
+        hint.style.textShadow = '0 1px 8px rgba(0,0,0,0.7)';
         panel.appendChild(hint);
 
         const button = document.createElement('a');
@@ -302,12 +308,8 @@
         dynamicDiv.appendChild(button);
 
         const countdownDisplay = document.getElementById('countdown');
-        if (!countdownDisplay) {
-          console.error('Countdown element not found after creation!');
-          return;
-        }
+        if (!countdownDisplay) return;
 
-        // Start countdown
         let counter = CONFIG.COUNTDOWN_SECONDS;
         const interval = setInterval(() => {
           counter -= 1;
