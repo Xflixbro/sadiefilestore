@@ -6,7 +6,7 @@
   <title>FileFlix • Pure Video</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* === NO BACKGROUNDS – TEXT ONLY OVER VIDEO === */
+    /* === NO BACKGROUNDS – TEXT ONLY OVER MEDIA === */
     * {
       margin: 0;
       padding: 0;
@@ -22,8 +22,8 @@
       position: relative;
       overflow: hidden;
     }
-    /* Fullscreen video background */
-    #bg-video {
+    /* Fullscreen media background */
+    #bg-video, #bg-image {
       position: fixed;
       top: 0;
       left: 0;
@@ -33,30 +33,33 @@
       z-index: -2;
       pointer-events: none;
     }
+    #bg-image {
+      display: none; /* Hidden by default */
+    }
     /* Very subtle dark overlay to help text pop – barely visible */
     body::after {
       content: "";
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.3);  /* Lighter than before, just enough */
+      background: rgba(0, 0, 0, 0.3);
       z-index: -1;
     }
     /* Main container: absolutely no background, no borders, no padding */
     .card {
       max-width: 700px;
       width: 100%;
-      background: transparent !important;  /* Completely transparent */
+      background: transparent !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       border: none !important;
       box-shadow: none !important;
-      padding: 0 !important;               /* No inner spacing */
+      padding: 0 !important;
       text-align: center;
       position: relative;
       z-index: 1;
     }
     /* All text gets text-shadow for readability */
-    h1, .subtitle, .countdown-label, #countdown, .permanent-badge, .footer-note, .error-message p, .error-message h3 {
+    h1, .subtitle, .countdown-label, #countdown, .permanent-badge, .footer-note, .error-message p, .error-message h3, .media-toggle {
       text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5);
     }
     .logo span {
@@ -96,6 +99,42 @@
       color: #9ca3c0;
       margin-bottom: 2.2rem;
       line-height: 1.5;
+    }
+    /* Media toggle switch */
+    .media-toggle {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border-radius: 50px;
+      padding: 0.4rem;
+      margin: 0 auto 1.5rem;
+      max-width: 250px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+    }
+    .toggle-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .toggle-btn.active {
+      background: rgba(229, 9, 20, 0.8);
+      color: white;
+      box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+    }
+    .toggle-btn i {
+      font-size: 1rem;
     }
     /* Countdown panel: now fully transparent */
     .countdown-panel {
@@ -195,10 +234,12 @@
   </style>
 </head>
 <body>
-  <!-- Video Background -->
+  <!-- Media Backgrounds -->
   <video id="bg-video" autoplay muted loop playsinline>
     <source src="https://image2url.com/r2/default/videos/1772174883098-428e5c9c-b79b-4553-8ac7-3e90dcf2eb21.mp4" type="video/mp4">
   </video>
+  
+  <img id="bg-image" src="https://files.catbox.moe/1v0rqm.jpg" alt="Background">
 
   <!-- Absolutely no background container -->
   <div class="card">
@@ -212,6 +253,16 @@
     <div class="subtitle">
       <i class="fas fa-shield-alt" style="margin-right: 6px; color: #4eac6d;"></i> 
       Permanent • Private • Instant
+    </div>
+
+    <!-- Media Toggle Switch -->
+    <div class="media-toggle" id="mediaToggle">
+      <button class="toggle-btn active" id="videoBtn">
+        <i class="fas fa-video"></i> Video
+      </button>
+      <button class="toggle-btn" id="imageBtn">
+        <i class="fas fa-image"></i> Image
+      </button>
     </div>
 
     <!-- Dynamic content -->
@@ -255,6 +306,35 @@
 
       document.addEventListener('DOMContentLoaded', function() {
         log('DOM fully loaded');
+
+        // Get media elements
+        const video = document.getElementById('bg-video');
+        const image = document.getElementById('bg-image');
+        const videoBtn = document.getElementById('videoBtn');
+        const imageBtn = document.getElementById('imageBtn');
+
+        // Media toggle functionality
+        if (videoBtn && imageBtn && video && image) {
+          // Set initial state (video active)
+          video.style.display = 'block';
+          image.style.display = 'none';
+          
+          videoBtn.addEventListener('click', function() {
+            video.style.display = 'block';
+            image.style.display = 'none';
+            videoBtn.classList.add('active');
+            imageBtn.classList.remove('active');
+            log('Switched to video background');
+          });
+
+          imageBtn.addEventListener('click', function() {
+            video.style.display = 'none';
+            image.style.display = 'block';
+            imageBtn.classList.add('active');
+            videoBtn.classList.remove('active');
+            log('Switched to image background');
+          });
+        }
 
         const dynamicDiv = document.getElementById('dynamic-content');
         if (!dynamicDiv) return;
