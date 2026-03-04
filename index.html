@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FileFlix • Pure Video</title>
+  <title>FileFlix • Pure Media</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     /* === NO BACKGROUNDS – TEXT ONLY OVER MEDIA === */
@@ -33,9 +33,6 @@
       z-index: -2;
       pointer-events: none;
     }
-    #bg-image {
-      display: none; /* Hidden by default */
-    }
     /* Very subtle dark overlay to help text pop – barely visible */
     body::after {
       content: "";
@@ -59,7 +56,7 @@
       z-index: 1;
     }
     /* All text gets text-shadow for readability */
-    h1, .subtitle, .countdown-label, #countdown, .permanent-badge, .footer-note, .error-message p, .error-message h3, .media-toggle {
+    h1, .subtitle, .countdown-label, #countdown, .permanent-badge, .footer-note, .error-message p, .error-message h3 {
       text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5);
     }
     .logo span {
@@ -68,7 +65,6 @@
     .logo i {
       filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
     }
-    /* Typography colors remain the same */
     .logo {
       display: flex;
       align-items: center;
@@ -100,43 +96,7 @@
       margin-bottom: 2.2rem;
       line-height: 1.5;
     }
-    /* Media toggle switch */
-    .media-toggle {
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      border-radius: 50px;
-      padding: 0.4rem;
-      margin: 0 auto 1.5rem;
-      max-width: 250px;
-      border: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-    }
-    .toggle-btn {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: rgba(255,255,255,0.6);
-      padding: 0.6rem 1rem;
-      border-radius: 50px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .toggle-btn.active {
-      background: rgba(229, 9, 20, 0.8);
-      color: white;
-      box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
-    }
-    .toggle-btn i {
-      font-size: 1rem;
-    }
-    /* Countdown panel: now fully transparent */
+    /* Countdown panel */
     .countdown-panel {
       background: transparent !important;
       border-radius: 0;
@@ -159,7 +119,6 @@
       line-height: 1;
       margin-bottom: 0.5rem;
     }
-    /* Button stays visible with its own background */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -182,7 +141,6 @@
       background: #f82a34;
       transform: scale(1.02);
     }
-    /* Permanent badge: no background */
     .permanent-badge {
       background: transparent !important;
       border-radius: 0;
@@ -199,7 +157,6 @@
       margin-top: 1.5rem;
       text-shadow: 0 1px 5px rgba(0,0,0,0.7);
     }
-    /* Error message: only a subtle border, background removed */
     .error-message {
       color: #f1a9a9;
       background: transparent !important;
@@ -216,7 +173,6 @@
     .error-message p {
       color: #ddd;
     }
-    /* Debug panel */
     #debug-console {
       background: rgba(0,0,0,0.8);
       color: #0f0;
@@ -234,12 +190,43 @@
   </style>
 </head>
 <body>
-  <!-- Media Backgrounds -->
+  <!-- ============================================= -->
+  <!-- EDIT HERE: CHOOSE MEDIA TYPE (uncomment only ONE section) -->
+  <!-- ============================================= -->
+
+  <!-- 
+    YOUR MEDIA URLS:
+    VIDEO: https://image2url.com/r2/default/videos/1771692430672-ffb59806-3fe4-4e7b-a442-0f3262ec186c.mp4
+    IMAGE: https://files.catbox.moe/en20rk.jpg
+  -->
+
+  <!-- OPTION 1: VIDEO BACKGROUND (uncomment this section and comment out IMAGE section) -->
   <video id="bg-video" autoplay muted loop playsinline>
-    <source src="https://image2url.com/r2/default/videos/1772174883098-428e5c9c-b79b-4553-8ac7-3e90dcf2eb21.mp4" type="video/mp4">
+    <!-- Your video URL -->
+    <source src="https://image2url.com/r2/default/videos/1771692430672-ffb59806-3fe4-4e7b-a442-0f3262ec186c.mp4" type="video/mp4">
+    <!-- Additional video URLs (uncomment to use) -->
+    <!-- <source src="https://image2url.com/r2/default/videos/your-next-video.mp4" type="video/mp4"> -->
   </video>
-  
-  <img id="bg-image" src="https://files.catbox.moe/1v0rqm.jpg" alt="Background">
+  <!-- HIDE image when using video -->
+  <img id="bg-image" src="" style="display: none;">
+
+  <!-- OPTION 2: IMAGE BACKGROUND (uncomment this section and comment out VIDEO section) -->
+  <!--
+  <img id="bg-image" src="https://files.catbox.moe/en20rk.jpg" alt="Background">
+  <video id="bg-video" autoplay muted loop playsinline style="display: none;">
+    <source src="" type="video/mp4">
+  </video>
+  -->
+
+  <!-- Additional image URLs (copy and paste inside the src above to switch):
+       https://files.catbox.moe/en20rk.jpg
+       https://files.catbox.moe/your-next-image.jpg
+       https://files.catbox.moe/another-image.jpg
+  -->
+
+  <!-- ============================================= -->
+  <!-- END OF EDIT SECTION -->
+  <!-- ============================================= -->
 
   <!-- Absolutely no background container -->
   <div class="card">
@@ -253,16 +240,6 @@
     <div class="subtitle">
       <i class="fas fa-shield-alt" style="margin-right: 6px; color: #4eac6d;"></i> 
       Permanent • Private • Instant
-    </div>
-
-    <!-- Media Toggle Switch -->
-    <div class="media-toggle" id="mediaToggle">
-      <button class="toggle-btn active" id="videoBtn">
-        <i class="fas fa-video"></i> Video
-      </button>
-      <button class="toggle-btn" id="imageBtn">
-        <i class="fas fa-image"></i> Image
-      </button>
     </div>
 
     <!-- Dynamic content -->
@@ -307,35 +284,6 @@
       document.addEventListener('DOMContentLoaded', function() {
         log('DOM fully loaded');
 
-        // Get media elements
-        const video = document.getElementById('bg-video');
-        const image = document.getElementById('bg-image');
-        const videoBtn = document.getElementById('videoBtn');
-        const imageBtn = document.getElementById('imageBtn');
-
-        // Media toggle functionality
-        if (videoBtn && imageBtn && video && image) {
-          // Set initial state (video active)
-          video.style.display = 'block';
-          image.style.display = 'none';
-          
-          videoBtn.addEventListener('click', function() {
-            video.style.display = 'block';
-            image.style.display = 'none';
-            videoBtn.classList.add('active');
-            imageBtn.classList.remove('active');
-            log('Switched to video background');
-          });
-
-          imageBtn.addEventListener('click', function() {
-            video.style.display = 'none';
-            image.style.display = 'block';
-            imageBtn.classList.add('active');
-            videoBtn.classList.remove('active');
-            log('Switched to image background');
-          });
-        }
-
         const dynamicDiv = document.getElementById('dynamic-content');
         if (!dynamicDiv) return;
 
@@ -357,7 +305,7 @@
         const telegramUrl = `https://t.me/${CONFIG.BOT_USERNAME}?start=${encodeURIComponent(startParam)}`;
         log('Telegram URL:', telegramUrl);
 
-        // Create countdown elements (no background)
+        // Create countdown elements
         const panel = document.createElement('div');
         panel.className = 'countdown-panel';
 
